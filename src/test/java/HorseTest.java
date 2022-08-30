@@ -101,7 +101,7 @@ class HorseTest {
             "1, 2, 2.5",
             "2.2, 3.3, 4.4",
             "1.1, 2.2, 2.75",
-            "3.3, 4.4, 6.05"    // без DecimalFormat получается 6.050000000000001 PACHIMU?
+            "3.3, 4.4, 6.05"    // без DecimalFormat получается 6.050000000000001 !???
     })
     void methodAssignsDistanceValueCalculatedUsingTheFormulaFromTheMoveMethod(double speed, double distance, double expectedDistance) {
         try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {

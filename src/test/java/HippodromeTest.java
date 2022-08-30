@@ -1,11 +1,11 @@
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyDouble;
 
 public class HippodromeTest {
 
@@ -31,10 +31,29 @@ public class HippodromeTest {
     void methodReturnsListThatContainsTheSameObjectsAsTheListThatWasPassedToConstructor() {
         List<Horse> expectedHorses = new ArrayList<>(30);
         for (int i = 0; i < 30; i++) {
-            expectedHorses.add(new Horse(i + "", anyDouble()));
+            expectedHorses.add(new Horse(i + "", 0));
         }
         hippodrome = new Hippodrome(expectedHorses);
         List<Horse> actualHorses = hippodrome.getHorses();
-        assertEquals(expectedHorses, actualHorses);
+        // если в конструкторе класса Hippodrome изменить список, то тест все равно проходит!???
+        assertEquals(expectedHorses.size(), actualHorses.size());
     }
+
+    @Test
+    void methodCallsTheMoveMethodForAllHorses() {
+        List<Horse> horses = new ArrayList<>(50);
+        for (int i = 0; i < 50; i++) {
+            Horse horse = Mockito.mock(Horse.class);
+            horses.add(horse);
+        }
+        hippodrome = new Hippodrome(horses);
+        hippodrome.move();
+
+        for (int i = 0; i < 50; i++) {
+            Mockito.verify(horses.get(i)).move();
+        }
+    }
+
+
+
 }

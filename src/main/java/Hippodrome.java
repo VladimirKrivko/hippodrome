@@ -14,7 +14,6 @@ public class Hippodrome {
         } else if (horses.isEmpty()) {
             throw new IllegalArgumentException("Horses cannot be empty.");
         }
-
         this.horses = horses;
     }
 
