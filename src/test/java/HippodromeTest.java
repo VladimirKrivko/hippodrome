@@ -25,4 +25,6 @@ public class HippodromeTest {
         });
         assertEquals("Horses cannot be empty.", actualException.getMessage());
     }
+
+
 }

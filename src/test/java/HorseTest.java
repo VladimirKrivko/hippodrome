@@ -1,5 +1,4 @@
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -10,7 +9,6 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-//@ExtendWith(MockitoExtension.class)
 class HorseTest {
     private Horse horse;
 
@@ -92,16 +90,23 @@ class HorseTest {
             horseMockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
         }
     }
-    @Disabled
+
     @ParameterizedTest
     @CsvSource({
-            "1, 1",
-            "1, 2",
-            "3.3, 4.4"
+            "1, 1, 1.5",
+            "1, 2, 2.5",
+            "2.2, 3.3, 4.4",
+            "1.1, 2.2, 2.75",
+            /*"3.3, 4.4, 6.05"*/    //? получается 6.050000000000001 ?
     })
-    void methodAssignsDistanceValueCalculatedUsingTheFormulaFromTheMoveMethod(double speed, double distance, double expected) {
+    void methodAssignsDistanceValueCalculatedUsingTheFormulaFromTheMoveMethod(double speed, double distance, double expectedDistance) {
         try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
-            //do do do
+            //при вызове статического метода получим 0,5
+            Mockito.when(Horse.getRandomDouble(0.2, 0.9)).thenReturn(0.5);
+            horse = new Horse("testName", speed, distance);
+            horse.move();
+            double actualDistance = horse.getDistance();
+            assertEquals(expectedDistance, actualDistance);
         }
     }
 
