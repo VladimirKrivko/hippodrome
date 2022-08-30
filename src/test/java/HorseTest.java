@@ -6,6 +6,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -14,9 +18,9 @@ class HorseTest {
 
     @Test
     void testConstructorWithNameNullParameter() {
-        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () -> {
-            horse = new Horse(null, 0, 0);
-        });
+        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () ->
+            horse = new Horse(null, 0, 0)
+        );
         assertEquals("Name cannot be null.", actualException.getMessage());
     }
 
@@ -28,25 +32,25 @@ class HorseTest {
             StringUtils.LF,
     })
     void testConstructorWithNameEmptyOrOnlyWhiteSpaceParameter(String name) {
-        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () -> {
-            horse = new Horse(name, 0, 0);
-        });
+        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () ->
+            horse = new Horse(name, 0, 0)
+        );
         assertEquals("Name cannot be blank.", actualException.getMessage());
     }
 
     @Test
     void testConstructorWithSpeedNegativeParameter() {
-        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () -> {
-            horse = new Horse("testName", -1, 0);
-        });
+        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () ->
+            horse = new Horse("testName", -1, 0)
+        );
         assertEquals("Speed cannot be negative.", actualException.getMessage());
     }
 
     @Test
     void testConstructorWithDistanceNegativeParameter() {
-        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () -> {
-            horse = new Horse("testName", 0, -1);
-        });
+        IllegalArgumentException actualException = assertThrows(IllegalArgumentException.class, () ->
+            horse = new Horse("testName", 0, -1)
+        );
         assertEquals("Distance cannot be negative.", actualException.getMessage());
     }
 
@@ -97,16 +101,18 @@ class HorseTest {
             "1, 2, 2.5",
             "2.2, 3.3, 4.4",
             "1.1, 2.2, 2.75",
-            /*"3.3, 4.4, 6.05"*/    //? получается 6.050000000000001 ?
+            "3.3, 4.4, 6.05"    // без DecimalFormat получается 6.050000000000001 PACHIMU?
     })
     void methodAssignsDistanceValueCalculatedUsingTheFormulaFromTheMoveMethod(double speed, double distance, double expectedDistance) {
         try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
-            //при вызове статического метода получим 0,5
-            Mockito.when(Horse.getRandomDouble(0.2, 0.9)).thenReturn(0.5);
+            horseMockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(0.5);
             horse = new Horse("testName", speed, distance);
             horse.move();
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
             double actualDistance = horse.getDistance();
-            assertEquals(expectedDistance, actualDistance);
+            double result = Double.parseDouble(df.format(actualDistance));
+            assertEquals(expectedDistance, result);
         }
     }
 
