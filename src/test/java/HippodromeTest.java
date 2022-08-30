@@ -54,6 +54,17 @@ public class HippodromeTest {
         }
     }
 
-
+    @Test
+    void methodReturnsHorseWithTheLargestDistanceValue() {
+        Horse expectedHorse = new Horse("testName", 1, 100);
+        List<Horse> horses = new ArrayList<>(30);
+        for (int i = 0; i < 30; i++) {
+            horses.add(new Horse(i + "", 1, i));
+        }
+        horses.add(expectedHorse);
+        hippodrome = new Hippodrome(horses);
+        Horse actualHorse = hippodrome.getWinner();
+        assertEquals(expectedHorse, actualHorse);
+    }
 
 }
