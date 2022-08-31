@@ -31,7 +31,7 @@ public class HippodromeTest {
     void methodReturnsListThatContainsTheSameObjectsAsTheListThatWasPassedToConstructor() {
         List<Horse> expectedHorses = new ArrayList<>(30);
         for (int i = 0; i < 30; i++) {
-            expectedHorses.add(new Horse(i + "", 0));
+            expectedHorses.add(new Horse(i + "testName", 0));
         }
         hippodrome = new Hippodrome(expectedHorses);
         List<Horse> actualHorses = hippodrome.getHorses();
@@ -59,7 +59,7 @@ public class HippodromeTest {
         Horse expectedHorse = new Horse("testName", 1, 100);
         List<Horse> horses = new ArrayList<>(30);
         for (int i = 0; i < 30; i++) {
-            horses.add(new Horse(i + "", 1, i));
+            horses.add(new Horse(i + "testName", 1, i));
         }
         horses.add(expectedHorse);
         hippodrome = new Hippodrome(horses);
