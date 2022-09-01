@@ -5,7 +5,7 @@
                      filePattern="logs/hippodrome.%d{yyyy-MM-dd}.log"
                      immediateFlush="false" ignoreExceptions="false">
             <PatternLayout>
-                <Pattern>%d %-5p %-10c: %m%n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-11c: %m%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
